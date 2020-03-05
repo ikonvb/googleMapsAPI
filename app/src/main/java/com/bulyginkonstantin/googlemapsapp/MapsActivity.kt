@@ -1,7 +1,10 @@
 package com.bulyginkonstantin.googlemapsapp
 
+import android.app.Activity
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -15,6 +18,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -41,6 +47,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.setOnMarkerClickListener(this)
 
@@ -48,9 +55,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val sydney = LatLng(-34.0, 151.0)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 8.0F))
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        checkPermission()
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
         return false
+    }
+
+    private fun checkPermission() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
     }
 }
