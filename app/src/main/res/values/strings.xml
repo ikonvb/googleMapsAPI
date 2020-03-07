@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Google Maps App</string>
     <string name="title_activity_maps">Map</string>
+    <string name="api_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDwY6N-UM0QiKoh93-_emYDJO3t1k9MiSw</string>
 </resources>
